@@ -3,6 +3,7 @@ pipeline {
     stages {
         stage('Clone') {
             steps {
+                deleteDir()
                 git branch: 'main', credentialsId: "${credentials}", url:  "${urlGit}"
             }
         }
