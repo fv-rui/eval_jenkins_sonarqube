@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Clone') {
             steps {
-                git branch: 'main', credentialsId: 'pat_Rui_fork', url:  "${urlGit}"
+                git branch: 'main', credentialsId: "${credentials}", url:  "${urlGit}"
             }
         }
         stage('Build') {
@@ -15,6 +15,16 @@ pipeline {
         stage('Teste') {
             steps {
                 sh 'npm test'
+                 withSonarQubeEnv('sonar-srv-1') {
+                    sh """
+                        sonar-scanner \
+                          -Dsonar.projectKey=${projectKey} \
+                          -Dsonar.sources=. \
+                          -Dsonar.host.url=${ip_adress} \
+                          -Dsonar.token=${token}
+                    """
+                }
+                waitForQualityGate abortPipeline: true
             }
         }
     }
