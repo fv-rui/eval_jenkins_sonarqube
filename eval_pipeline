@@ -1,0 +1,21 @@
+pipeline {
+    agent { label 'angular-sonnarscanner' }
+    stages {
+        stage('Clone') {
+            steps {
+                git branch: 'main', credentialsId: 'pat_Rui_fork', url:  "${urlGit}"
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'npm install'
+                sh 'npx tsc index.ts --outDir dist'
+            }
+        }
+        stage('Teste') {
+            steps {
+                sh 'npm test'
+            }
+        }
+    }
+}
