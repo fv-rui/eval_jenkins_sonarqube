@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'angular-sonnarscanner' }
+    agent { label 'angular-sonnarscanner2' }
     stages {
         stage('Clone') {
             steps {
